@@ -1,12 +1,12 @@
  const pagFunction=async(searchText)=>{
-    const url=`https://openapi.programming-hero.com/api/retro-forum/posts`;
+    const url=`https://openapi.programming-hero.com/api/retro-forum/posts?category=${searchText}`;
     const res= await fetch(url);
     const data=await res.json();
     const posts=data.posts;
     //console.log(posts)
     display(posts);
-    commentHandle(posts);
-   
+  
+  
 
  }
 
@@ -15,17 +15,20 @@
     const cardcontainer=document.getElementById("card-section");
     cardcontainer.textContent='';
 
-    posts=posts.slice(0,6)
+    posts=posts.slice(0,5)
    for(let post of posts){
     //console.log(post)
-    //console.log(post)
+   // console.log(post)
     const cards=document.createElement("div");
     cards.innerHTML=
     `<div class="card card-compact w-[770px]  shadow-xl p-8">
     <div class="w-full flex justify-start gap-3">
-        <div class="w-40  border-spacing-1">
-        <img src"${post.image}" class="w-32 h-32  rounded-full">
-
+    <div class="indicator">
+    <span id="indicator-item" class="indicator-item badge badge-secondary"></span>
+    <div class="grid w-12 h-12  place-items-center">
+    <img src=${post.image} class="rounded-full">
+    </div>
+  </div>
         </div>
         <div class="w-3/4 pl-8">
             <div class="gap-4">
@@ -71,28 +74,51 @@
     
     //console.log(post)
    }
+   toggleLoading(false)
  }
 
  const searchHandle=()=>{
+    toggleLoading(true)
     const inpuFlied=document.getElementById("search");
     const searchText=inpuFlied.value
     //console.log(searchText)
-    //pagFunction(searchText)
+    pagFunction(searchText)
 
  }
- pagFunction()
- function commentHandle (id){
-   // console.log(id)
-   for(let item of id){
-    //console.log(item)
-    
-   }
-    
-    
+ //pagFunction()
+ const commentHandle=async ()=>{
+ const res=await fetch('https://openapi.programming-hero.com/api/retro-forum/posts');
+ const data=await res.json();
+ const compost=data.posts;
 
+ const card=document.getElementById("card-title");
+ for(let posted of compost ){
+    console.log(posted)
+    const carder=document.createElement("div");
+    carder.innerHTML=`
+    <div class="flex justify-between">
+                    <h1>Title</h1>
+                    <span>gf</span>
+
+                  </div>
+                    <div class="card card-compact w-96 flex justify-between  bg-base-100 shadow-xl p-2">
+                      <div>
+                        <p>10 Kids Unaware of Their Halloween Costume</p>
+                      </div>
+                      <div class="">
+                        <span><img src="asset/Group 16.png" alt=""></span>
+                        <span>1,568</span>
+                    </div>
+    
+    
+    `;
+    card.appendChild(carder)
+ }
+    
 
 
  }
+
 
  const lastedPost=async()=>{
     const res=await fetch('https://openapi.programming-hero.com/api/retro-forum/latest-posts');
@@ -106,7 +132,7 @@
  function posted(lastpost){
     const lastedcontent=document.getElementById("lastedcontent");
     for(let lastp of lastpost){
-        console.log(lastp) 
+       // console.log(lastp) 
       const lastcard=document.createElement("div");   
 
         lastcard.innerHTML=`
@@ -139,18 +165,21 @@
         
         `;
 
-
-
-
         lastedcontent.appendChild(lastcard);
-        
-  
+
 
     }
     
-   
-    
-
 
  }
  lastedPost()
+///osloading page
+ const toggleLoading=(isloading)=>{
+    const loading=document.getElementById("loading");
+    if(isloading){
+      loading.classList.remove("hidden");
+    }else{
+      loading.classList.add("hidden")
+    }
+    
+  }
