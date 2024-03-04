@@ -5,6 +5,7 @@
     const posts=data.posts;
     //console.log(posts)
     display(posts);
+    commentHandle(posts)
   
   
 
@@ -13,6 +14,7 @@
 
  function display(posts){
     const cardcontainer=document.getElementById("card-section");
+
     cardcontainer.textContent='';
 
     posts=posts.slice(0,5)
@@ -71,6 +73,12 @@
 `;
     
     cardcontainer.appendChild(cards)
+
+    /***comment post start*/
+
+
+    /***end */
+
     
     //console.log(post)
    }
@@ -86,14 +94,13 @@
 
  }
  //pagFunction()
- const commentHandle=async ()=>{
- const res=await fetch('https://openapi.programming-hero.com/api/retro-forum/posts');
- const data=await res.json();
- const compost=data.posts;
+function commentHandle(posts){
+  const card=document.getElementById("card-title");
+  let count =0
+  count=count+1;
 
- const card=document.getElementById("card-title");
- for(let posted of compost ){
-    console.log(posted)
+  for(let item of posts){
+    console.log(item)
     const carder=document.createElement("div");
     carder.innerHTML=`
     <div class="flex justify-between">
@@ -112,12 +119,13 @@
     
     
     `;
-    card.appendChild(carder)
- }
-    
+    card.appendChild(carder);
+  }
+}
+ 
 
 
- }
+
 
 
  const lastedPost=async()=>{
