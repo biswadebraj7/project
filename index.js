@@ -1,32 +1,118 @@
- const pagFunction=async(searchText)=>{
+const paFunction=async()=>{
+
+  const url=`https://openapi.programming-hero.com/api/retro-forum/posts`;
+  const res= await fetch(url);
+  const data=await res.json();
+  const posts=data.posts;
+  console.log(posts)
+  displays(posts);
+
+}
+function displays(posts){
+  const cardcontainer=document.getElementById("card-container");
+
+  cardcontainer.textContent='';
+
+  posts=posts.slice(0,5)
+ for(let post of posts){
+  //console.log(post)
+ console.log(post)
+  const cards=document.createElement("div");
+  cards.innerHTML=
+  `<div class="card card-compact w-[770px]  shadow-xl p-8">
+  <div class="w-full flex justify-start gap-3">
+  <div class="indicator">
+  <span id="indicator-item" class="indicator-item badge badge-secondary"></span>
+  <div class="grid w-12 h-12  place-items-center">
+  <img src=${post.image} class="rounded-full">
+  </div>
+</div>
+      </div>
+      <div class="w-3/4 pl-8">
+          <div class="gap-4">
+              <span class="text-base font-medium">${post.category}</span>
+              <span class="text-base font-medium pl-4">Author: ${post.author.name}</span>
+          </div>
+          <div>
+              <h1 class="text-xl font-bold py-3">${post.title}</h1>
+              <p class="text-base font-normal text-left pr-20">${post.description}</p>
+          </div>
+          <div class="py-8 border-dotted text-xl">
+             
+          </div>
+          <div class="flex justify-between items-center w-full ">
+              <div class=" grid grid-cols-3 gap-3">
+                  <div class="flex justify-start gap-3">
+                      <span><img src="asset/tabler-icon-message-2.png" alt=""></span>
+                      <span>${post.comment_count}</span>
+                  </div>
+                  <div class="flex justify-start gap-3">
+                      <span><img src="asset/Group 16.png" alt=""></span>
+                      <span>${post.view_count}</span>
+                  </div>
+                  <div class="flex justify-start gap-3">
+                      <span><img src="asset/Group 18.png" alt=""></span>
+                      <span>${post.posted_time} min</span>
+                  </div>
+                
+              </div>
+              <div class="float-end ">
+              <button onclick="commentHandle()" >
+             
+              <img  src="asset/Group 40106.png" alt="">
+              </button>
+              </div>
+          </div>
+
+      </div>
+  </div>
+</div>
+
+`;
+  cardcontainer.appendChild(cards)
+
+  /***comment post start*/
+
+
+  
+  
+ }
+ toggleLoading(false);
+
+
+
+}
+paFunction()
+
+/*** */
+
+const pagFunction=async(searchText)=>{
+    console.log(searchText)
     const url=`https://openapi.programming-hero.com/api/retro-forum/posts?category=${searchText}`;
     const res= await fetch(url);
     const data=await res.json();
     const posts=data.posts;
-    //console.log(posts)
+    console.log(posts)
     display(posts);
-    commentHandle(posts)
   
-  
-
  }
 
 
  function display(posts){
-    const cardcontainer=document.getElementById("card-section");
+    const cardcontainer=document.getElementById("card-container");
 
     cardcontainer.textContent='';
 
     posts=posts.slice(0,5)
    for(let post of posts){
     //console.log(post)
-   // console.log(post)
+   console.log(post)
     const cards=document.createElement("div");
     cards.innerHTML=
-    `<div class="card card-compact w-[770px]  shadow-xl p-8">
+    `<div class="card card-compact w-[770px]   shadow-xl p-8">
     <div class="w-full flex justify-start gap-3">
     <div class="indicator">
-    <span id="indicator-item" class="indicator-item badge badge-secondary"></span>
+    <span id="indicator-item" mr-4 class="indicator-item badge badge-secondary"></span>
     <div class="grid w-12 h-12  place-items-center">
     <img src=${post.image} class="rounded-full">
     </div>
@@ -56,13 +142,15 @@
                     </div>
                     <div class="flex justify-start gap-3">
                         <span><img src="asset/Group 18.png" alt=""></span>
-                        <span>${post.posted_time}min</span>
+                        <span>${post.posted_time} min</span>
                     </div>
                   
                 </div>
                 <div class="float-end ">
-                    <img onclick="commentHandle()" src="asset/Group 40106.png" alt="">
-
+                <button onclick="commentHandle()" >
+               
+                <img  src="asset/Group 40106.png" alt="">
+                </button>
                 </div>
             </div>
 
@@ -71,18 +159,53 @@
 </div>
 
 `;
-    
     cardcontainer.appendChild(cards)
 
     /***comment post start*/
 
 
-    /***end */
-
     
-    //console.log(post)
+
+
+
+
+    /***end
+     * 
+     */
    }
-   toggleLoading(false)
+   toggleLoading(false);
+
+
+  
+ }
+
+
+ let comcard=document.getElementById("comcard");
+ let indicatoritem=document.getElementById("indicator-item")
+ let  counter=0;
+ function commentHandle(isactive){
+   console.log("hello coment")
+   const comcreateCard=document.createElement("div");
+   counter = counter + 1;
+   const count = document.getElementById("count");
+   count.innerText = counter;
+
+   comcreateCard.innerHTML=`
+          <div class="flex justify-between px-6">
+             <div>
+                 <h1 class="text-xl font-bold py-3">${post.title}</h1>
+                 
+             </div>
+             <div class="flex justify-start py-3 ">
+             <span><img src="asset/Group 16.png" alt=""></span>
+             <span>${post.view_count}</span>
+             </div>
+             <div>
+         `
+       ;
+ comcard.appendChild(comcreateCard);
+ 
+
  }
 
  const searchHandle=()=>{
@@ -94,37 +217,10 @@
 
  }
  //pagFunction()
-function commentHandle(posts){
-  const card=document.getElementById("card-title");
-  let count =0
-  count=count+1;
-
-  for(let item of posts){
-    console.log(item)
-    const carder=document.createElement("div");
-    carder.innerHTML=`
-    <div class="flex justify-between">
-                    <h1>Title</h1>
-                    <span>gf</span>
-
-                  </div>
-                    <div class="card card-compact w-96 flex justify-between  bg-base-100 shadow-xl p-2">
-                      <div>
-                        <p>10 Kids Unaware of Their Halloween Costume</p>
-                      </div>
-                      <div class="">
-                        <span><img src="asset/Group 16.png" alt=""></span>
-                        <span>1,568</span>
-                    </div>
-    
-    
-    `;
-    card.appendChild(carder);
-  }
-}
- 
 
 
+
+ console.log(comcard)
 
 
 
