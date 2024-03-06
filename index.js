@@ -57,7 +57,7 @@ function displays(posts){
                 
               </div>
               <div class="float-end ">
-              <button onclick="commentHandle()" >
+              <button onclick="commentHandle('${post.title.replace("'","")}',${post.view_count})" >
              
               <img  src="asset/Group 40106.png" alt="">
               </button>
@@ -147,8 +147,7 @@ const pagFunction=async(searchText)=>{
                   
                 </div>
                 <div class="float-end ">
-                <button onclick="commentHandle()" >
-               
+                <button onclick="commentHandle('${post.title.replace("'","")}',${post.view_count})">
                 <img  src="asset/Group 40106.png" alt="">
                 </button>
                 </div>
@@ -164,27 +163,21 @@ const pagFunction=async(searchText)=>{
     /***comment post start*/
 
 
-    
-
-
-
-
     /***end
      * 
      */
    }
    toggleLoading(false);
 
-
-  
+  //'${post.title.replace("'","")}',${post.view_count}
  }
-
 
  let comcard=document.getElementById("comcard");
  let indicatoritem=document.getElementById("indicator-item")
  let  counter=0;
- function commentHandle(isactive){
-   console.log("hello coment")
+ function commentHandle( title, view_count){
+  console.log(title,view_count)
+   //console.log("hello coment")
    const comcreateCard=document.createElement("div");
    counter = counter + 1;
    const count = document.getElementById("count");
@@ -193,12 +186,12 @@ const pagFunction=async(searchText)=>{
    comcreateCard.innerHTML=`
           <div class="flex justify-between px-6">
              <div>
-                 <h1 class="text-xl font-bold py-3">${post.title}</h1>
+                 <h1 class="text-xl font-bold py-3">${title}</h1>
                  
              </div>
              <div class="flex justify-start py-3 ">
              <span><img src="asset/Group 16.png" alt=""></span>
-             <span>${post.view_count}</span>
+             <span>${view_count}</span>
              </div>
              <div>
          `
